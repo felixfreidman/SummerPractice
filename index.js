@@ -1,5 +1,22 @@
 "use strict"
 
+let socket;
+try {
+    socket = new WebSocket('wss://felixfreidman.github.io/practice/tutor-index.html');
+} catch(e) {
+    socket = new WebSocket('ws://felixfreidman.github.io/practice/tutor-index.html');
+}
+
+socket.onopen = function(e) {
+  alert("[open] Соединение установлено");
+  alert("Отправляем данные на сервер");
+  socket.send("Меня зовут Джон");
+};
+
+socket.onerror = function(error) {
+  alert(`[error] ${error.message}`);
+};
+
 let imgLabel = '<img class="image" src=image/img$n.png />'
 
 let board1 = document.querySelector(".board1");
