@@ -2,9 +2,9 @@
 
 let socket;
 try {
-    socket = new WebSocket('wss://felixfreidman.github.io/practice/tutor-index.html');
+    socket = new WebSocket('wss://felixfreidman.github.io/practice/');
 } catch(e) {
-    socket = new WebSocket('ws://felixfreidman.github.io/practice/tutor-index.html');
+    socket = new WebSocket('ws://felixfreidman.github.io/practice/');
 }
 
 socket.onopen = function(e) {
