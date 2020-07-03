@@ -65,31 +65,22 @@ document.onclick = event=> {
         position = 8*(Math.trunc(position / 8) + 1) - 1 - position % 8;
 
         if (!event.target.style.transform) {
-            deg = 90;
+            deg = -90;
         } else {
             deg = event.target.style.transform;
             deg = deg.substring(7);
             deg = +deg.substring(0, deg.indexOf("deg") )
-            deg %= 90;
+            deg -= 90;
         }
 
         let devi = Math.random() * 3;
-        let degLabel = deg;
 
-        if (deg >= 87 && deg <= 90 || 
-            deg >= 177 && deg <= 180 ||
-            deg >= 267 && deg <= 270) {
-            deg += devi;
-            degLabel -= devi;
-        } else {
-            deg -= devi;
-            degLabel += devi;
-        }
-        deg += 90;
-        degLabel += 90;
+        deg += ( (Math.random() < 0.5) ? devi : -devi);
+
+        console.log(deg);
 
         event.target.style.transform = `rotate(${deg}deg)`;
-        document.getElementById(`2.${position}`).children[0].style.transform = `rotate(${degLabel}deg)`;
+        document.getElementById(`2.${position}`).children[0].style.transform = `rotate(${-deg}deg)`;
     }
 }
 
