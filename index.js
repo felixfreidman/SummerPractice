@@ -27,8 +27,9 @@ xhr.send();
 
 // тело ответа {"сообщение": "Привет, мир!"}
 xhr.onload = function() {
-  let responseObj = xhr.response;
-  alert(responseObj.message); // Привет, мир!
+  //let responseObj = xhr.response;
+  alert(xhr.status);
+  //alert(responseObj.message); // Привет, мир!
 };
   
 xhr.onprogress = function(event) {
