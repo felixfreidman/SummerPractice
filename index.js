@@ -14,6 +14,37 @@ setDraggable();
 setDroppable();
 
 
+let xhr = new XMLHttpRequest();
+
+let url = new URL('https://google.com/search');
+url.searchParams.set('q', 'test me!');
+
+xhr.open('GET', '/article/xmlhttprequest/example/json');
+
+xhr.responseType = 'json';
+
+xhr.send();
+
+// тело ответа {"сообщение": "Привет, мир!"}
+xhr.onload = function() {
+  let responseObj = xhr.response;
+  alert(responseObj.message); // Привет, мир!
+};
+  
+xhr.onprogress = function(event) {
+    if (event.lengthComputable) {
+      alert(`Получено ${event.loaded} из ${event.total} байт`);
+    } else {
+      alert(`Получено ${event.loaded} байт`); // если в ответе нет заголовка Content-Length
+    }
+  
+  };
+  
+xhr.onerror = function() {
+    alert("Запрос не удался");
+  };
+
+
 document.ondblclick = (event)=> {
     if (event.path[1].id.includes('1.')) {
         let position = +event.path[1].id.substring(2);
