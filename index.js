@@ -4,46 +4,47 @@ let imgLabel = '<img class="image" src=image/img$n.png />'
 
 let board1 = document.querySelector(".board1");
 let board2 = document.querySelector(".board2");
+let board3 = document.querySelector(".board3");
+
 
 setSquares(board1, '1.');
 setSquares(board2, '2.');
+// setSquares(board3, '3.');
 
 setLabels();
 
 setDraggable();
 setDroppable();
 
+html2canvas(document.querySelector(".board2")).then(canvas => {
+    canvas.id = "output";
+    document.querySelector("#cameraView").appendChild(canvas);
+});
 
-let xhr = new XMLHttpRequest();
 
-let url = new URL('https://google.com/search');
-url.searchParams.set('q', 'test me!');
+let mode = false;
 
-xhr.open('GET', '/article/xmlhttprequest/example/json');
+document.querySelector("#waves").addEventListener("click", (event)=> {
+    mode = event.target.checked;
 
-xhr.responseType = 'json';
+    properties();
+})
 
-xhr.send();
 
-// тело ответа {"сообщение": "Привет, мир!"}
-xhr.onload = function() {
-  //let responseObj = xhr.response;
-  alert(xhr.status);
-  //alert(responseObj.message); // Привет, мир!
-};
-  
-xhr.onprogress = function(event) {
-    if (event.lengthComputable) {
-      alert(`Получено ${event.loaded} из ${event.total} байт`);
-    } else {
-      alert(`Получено ${event.loaded} байт`); // если в ответе нет заголовка Content-Length
-    }
-  
-  };
-  
-xhr.onerror = function() {
-    alert("Запрос не удался");
-  };
+
+// fetch('https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits')
+//   .then(response => response.json())
+//   .then(commits => alert(commits[0].author.login));
+
+// let response = await fetch('https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits');
+
+// // получить один заголовок
+// alert(response.headers.get('Content-Type')); // application/json; charset=utf-8
+
+// // перебрать все заголовки
+// for (let [key, value] of response.headers) {
+//   alert(`${key} = ${value}`);
+// }
 
 
 document.ondblclick = (event)=> {
@@ -82,6 +83,8 @@ document.onclick = event=> {
         event.target.style.transform = `rotate(${deg}deg)`;
         document.getElementById(`2.${position}`).children[0].style.transform = `rotate(${-deg}deg)`;
     }
+
+    properties();
 }
 
 function setDraggable() {
@@ -133,11 +136,45 @@ function moveLabel(fromCoord, toCoord, label) {
     let svg = `<img class="image" src=svg/${label}.svg />`;
 
     mirror(toCoord, svg);
+
+    properties();
+    
 }
 
 
 function showLabelAt(coord, label) {
     document.getElementById(coord).innerHTML = label;
+
+    // async function send() {
+
+    //     let figure = {
+    //         "img": label,
+    //         "position": coord 
+    //     } 
+    //     // position = куда, img - id картинки
+        
+    //     // случайный url
+    //     let url = 'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits';
+    
+    //     let response = await fetch(url, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json;charset=utf-8'
+    //           },
+    //         body: JSON.stringify(figure)
+    //     });
+    
+    //     if (response.ok) { // если HTTP-статус в диапазоне 200-299
+    //     // получаем тело ответа (см. про этот метод ниже)
+    //         let result = await response.json();
+    //         alert(result.message);
+    //     } else {
+    //         alert("Ошибка HTTP: " + response.status);
+    //     }
+    
+    // }
+    
+    // send();
 }
 
 
@@ -146,4 +183,44 @@ function mirror(toCoord, file) {
     position = 8*(Math.trunc(position / 8) + 1) - 1 - position % 8;
 
     document.getElementById(`2.${position}`).innerHTML = file;
+}
+
+
+function waves(canvas) {
+    let ca = document.getElementById('output');
+    let ctx = ca.getContext('2d');
+
+    ca.width = canvas.width;
+    ca.height = canvas.height;
+
+    let params = {
+        AMP: 20,
+        FREQ: 0.03,
+    };
+
+    ctx.clearRect(0, 0, ca.width, ca.height);
+    for (var i = 0; i < canvas.height; i++) {
+        let ofs = params.AMP * Math.sin(i * params.FREQ);
+        ctx.drawImage(canvas,
+                0, i, canvas.width, 1,
+                0 + ofs, i, canvas.width, 1);
+    }
+}
+
+function getBack(canvas) {
+    let parent = document.querySelector("#cameraView");
+    parent.removeChild(parent.lastChild);
+
+    canvas.id = "output";
+    parent.appendChild(canvas);
+}
+
+function properties() {
+    html2canvas(document.querySelector(".board2")).then(canvas => {
+        if (mode)
+            waves(canvas);
+        else {
+            getBack(canvas);
+        }
+    });
 }
