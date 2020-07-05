@@ -4,7 +4,7 @@ let imgLabel = '<img class="image" src=image/img$n.png />'
 
 let board1 = document.querySelector(".board1");
 let board2 = document.querySelector(".board2");
-let board3 = document.querySelector(".board3");
+let cameraView = document.querySelector("#cameraView");
 
 
 setSquares(board1, '1.');
@@ -18,16 +18,32 @@ setDroppable();
 
 html2canvas(document.querySelector(".board2")).then(canvas => {
     canvas.id = "output";
-    document.querySelector("#cameraView").appendChild(canvas);
+    cameraView.appendChild(canvas);
 });
 
 
-let mode = false;
+let wavesMode = false;
+let gradientMode = false;
 
 document.querySelector("#waves").addEventListener("click", (event)=> {
-    mode = event.target.checked;
+    wavesMode = event.target.checked;
 
     properties();
+})
+
+document.querySelector("#gradient").addEventListener("click", (event)=> {
+    gradientMode = event.target.checked;
+    if (gradientMode) {
+        console.log("Strange");
+        setGradient();
+    } else {
+        properties();
+    }
+});
+
+
+document.querySelector("#dots").addEventListener('change', ()=> {
+    render();
 })
 
 
@@ -56,9 +72,11 @@ document.ondblclick = (event)=> {
         document.getElementById(`1.${position}`).innerHTML = "";
         document.getElementById(`2.${newPos}`).innerHTML = "";
     }
+    properties();
+
 }
 
-document.onclick = event=> {
+function rotateLabels(event) {
     if (event.path[1].id.includes('1.')) {
         let deg = 0;
 
@@ -78,7 +96,7 @@ document.onclick = event=> {
 
         deg += ( (Math.random() < 0.5) ? devi : -devi);
 
-        console.log(deg);
+        // console.log(deg);
 
         event.target.style.transform = `rotate(${deg}deg)`;
         document.getElementById(`2.${position}`).children[0].style.transform = `rotate(${-deg}deg)`;
@@ -128,7 +146,7 @@ function setLabels() {
 }
 
 function moveLabel(fromCoord, toCoord, label) {
-    let figure = `<img class="image" src=image/${label}.png data-key=svg/${label}.svg />`;
+    let figure = `<img class="image" src=image/${label}.png data-key=svg/${label}.svg onclick=rotateLabels(event) />`;
 
     showLabelAt(fromCoord, "");
     showLabelAt(toCoord, figure);
@@ -192,7 +210,7 @@ function waves(canvas) {
 
     ca.width = canvas.width;
     ca.height = canvas.height;
-
+    
     let params = {
         AMP: 20,
         FREQ: 0.03,
@@ -208,19 +226,138 @@ function waves(canvas) {
 }
 
 function getBack(canvas) {
-    let parent = document.querySelector("#cameraView");
-    parent.removeChild(parent.lastChild);
+    cameraView.removeChild(cameraView.lastChild);
 
     canvas.id = "output";
-    parent.appendChild(canvas);
+    cameraView.appendChild(canvas);
 }
 
 function properties() {
     html2canvas(document.querySelector(".board2")).then(canvas => {
-        if (mode)
+        if (wavesMode)
             waves(canvas);
         else {
             getBack(canvas);
         }
     });
+}
+
+
+function inpDeg() {
+    let check = document.querySelector("#rotation");
+    let inp = document.querySelector('#inpDegrees');
+
+    if (!check.checked) {
+        inp.style.display = 'inline-block';
+        inp = document.querySelector("#degrees");
+
+        board1.height = board1.width;
+        rotateBoard();
+
+    } else {
+        inp.style.display = 'none';
+        board1.style.transform = `rotate(0deg)`;
+        board2.style.transform = `rotate(0deg)`;
+        properties();
+    }
+    
+}
+
+
+function rotateBoard() {
+    let deg = document.querySelector("#degrees").value;
+    if (deg === "") deg = 0;
+    board1.style.transform = `rotate(${deg}deg)`;
+    board2.style.transform = `rotate(${deg}deg)`;
+    cameraView.children[1].style.transform = `rotate(${deg}deg)`;
+}
+
+
+// works only with wave-mode...
+function setGradient() {
+    html2canvas(document.querySelector(".board2")).then(canvas => {
+        let ca = document.getElementById('output');
+        let ctx = ca.getContext('2d');
+
+        let grd = ctx.createLinearGradient(0, 0, ca.width, 0);
+        grd.addColorStop(0, '#00000090'); 
+        grd.addColorStop(1, '#3a3a3a05');
+
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, ca.width, ca.height);
+        console.log("gradient was added");
+    });
+}
+
+
+
+
+// Cannot push dots forward, they are behind board's picture
+function render() {
+    let canvas = document.getElementById('output');
+    let ctx = canvas.getContext('2d');
+    console.log("render");
+
+    ctx.beginPath();
+    ctx.strokeStyle = 'black';
+    let amount = Math.trunc( Math.random() * canvas.width * canvas.height);
+
+    for (let i = 0; i < amount; i++) {
+        let x = Math.trunc( Math.random() * canvas.width);
+        let y = Math.trunc( Math.random() * canvas.height);
+        ctx.moveTo(x, y);
+        ctx.lineTo(x+1, y+1);
+    }
+    ctx.stroke();
+    // requestAnimationFrame(render); // лучше не запускать
+}
+
+
+function drawFigure() {
+    let check = document.querySelector("#figures");
+    let inp = document.querySelector('#inpFigures');
+
+    if (!check.checked) {
+        inp.style.display = 'inline-block';       
+
+    } else {
+        inp.style.display = 'none';
+    }
+}
+
+function CnR() {
+    let canvas = document.getElementById('output');
+    let ctx = canvas.getContext('2d');
+    let amount;
+    
+    ctx.beginPath();
+    
+    if (document.querySelector("#circle").checked) {
+        amount = Math.trunc( Math.random() * 50);
+        
+        for (let i = 0; i < amount; i++) {
+            let x = Math.trunc( Math.random() * canvas.width);
+            let y = Math.trunc( Math.random() * canvas.height);
+            let r = Math.trunc( Math.random() * canvas.width / 4)
+            ctx.arc(x, y, r, 0,2*Math.PI);
+        }
+
+    } else {
+        /* get back */
+    }
+
+    if (document.querySelector("#rect").checked) {
+        amount = Math.trunc( Math.random() * 50);
+        for (let i = 0; i < amount; i++) {
+            let x = Math.trunc( Math.random() * canvas.width);
+            let y = Math.trunc( Math.random() * canvas.height);
+            let l = Math.trunc( Math.random() * canvas.width / 4)
+            ctx.rect(x, y, x+l, y+l);
+        }
+    } else {
+        /* get back */
+    }
+
+    ctx.stroke();
+
 }

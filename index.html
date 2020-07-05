@@ -28,17 +28,77 @@
             </div>
         </div>
         <div class="toolbar">
-            <div class="var">
-                <input id="waves" type="checkbox" />
-                <label for="waves">waves</label>
+            <div>
+                <h2>Fake camera</h2>
+                <div class="var">
+                    <input id="waves" type="checkbox" />
+                    <label for="waves">waves</label>
+                </div>
+                <div class="var dropdown">
+                    <input id="rotation" type="checkbox" />
+                    <label for="rotation" onclick="inpDeg()">rotations</label>
+                    <div class="dropdownCnt" id="inpDegrees">
+                        <input id="degrees" type="number" value="0" oninput="rotateBoard()" />
+                    </div>
+                </div>
             </div>
-            <div class="var">
-                <input id="rotation" type="checkbox" />
-                <label for="rotation">rotations</label>
+
+            <div>
+                <h2>Noise</h2>
+                <div class="var">
+                    <input id="gradient" type="checkbox" />
+                    <label for="gradient">gradient</label>
+                </div>
+                <div class="var">
+                    <input id="dots" type="checkbox" />
+                    <label for="dots">dots</label>
+                </div>
+                <div class="var dropdown" >
+                    <input id="figures" type="checkbox" />
+                    <label for="figures" onclick="drawFigure()">figures</label>
+                    <div class="dropdownCnt" id="inpFigures">
+                        <div>
+                            <input id="circle" type="checkbox" onclick="CnR()" />
+                            <label for="circle">circle</label>
+                        </div>
+                        <div>
+                            <input id="rect" type="checkbox" onclick="CnR()" />
+                            <label for="rect">rectangle</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <nav class="context_menu" id="context_menu">
+            <ul>
+                <li class="first_list_item" id="transform">Афинное преобразование</li>
+                <li class="first_list_item" id="cancel">Отменить преобразование</li>
+            </ul>
+        </nav>
+        <dialog>
+        <div>Введите матрицу <br> преобразования:</div>
+            <form>
+                <div class="inputs">
+                    <input type="number" class="digit_input">
+                    <input type="number" class="digit_input">
+                </div>
+                <div class="inputs">
+                    <input type="number" class="digit_input">
+                    <input type="number" class="digit_input">
+                </div>
+                <div class="inputs">
+                    <input type="number" class="digit_input">
+                    <input type="number" class="digit_input">
+                </div>
+                <div style="text-align: center">
+                    <div class="button">Применить</div>
+                </div>
+            </form>
+        </dialog>
         <script src="index.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script type="text/javascript" src="rotation.js"></script>
+
     </body>
   
 </html>

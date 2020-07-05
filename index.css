@@ -69,7 +69,7 @@ div[class^="board"] {
     align-self: center;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
     color: #1d0303;
     width: 300px;
@@ -82,15 +82,149 @@ img, label, input[type="checkbox"] {
     cursor: pointer;
 }
 
+img[id^="img"] {
+    z-index: 1000;
+}
+
 .toolbar {
     border-top: 2px solid salmon;
     margin-top: 75px;
+    margin-bottom: 100px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .var {
-    margin: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 #output {
     background-color: white;
+    max-width: 350px;
+    max-height: 435px;
 }
+
+.main > div:last-child > div {
+    overflow: hidden;
+    max-height: 520px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdownCnt {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    max-width: 60px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    margin-left: 10px;
+}
+
+#degrees {
+    max-width: 60px;
+    outline: none;
+}
+/* .dropdown .dropdownCnt { display: inline-block; } */
+
+h2 {
+    width: 150px;
+}
+
+#inpFigures { width: 100px; max-width: 100px; }
+
+input { outline: none; }
+
+
+
+/* Andrew's */
+.context_menu {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    background-color: rgb(255, 245, 238);
+    border-radius: 2px;
+    border: solid 1px #dfdfdf;
+    box-shadow: 1px 1px 2px #cfcfcf;
+  }
+  .context_menu_active {
+      display: block;
+  }
+  ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      margin-bottom: 10px;
+  }
+  li {
+      padding-right: 30px;
+      padding-bottom: 5px;
+      padding-top: 5px;
+      margin-top: 5px;
+      padding-left: 20px;
+      font: Calibri, sans-serif;
+      font-size: 12pt;
+      color: rgb(210, 132, 247);
+      cursor: pointer;
+      font-weight: bold;
+  }
+  li:hover {
+      color: rgb(255, 245, 238);
+      background-color: rgb(210, 132, 247);
+  }
+  dialog {
+      display: none;
+      border-radius: 2px;
+      border: solid 1px #dfdfdf;
+      box-shadow: 1px 1px 2px #cfcfcf;
+      background-color: rgb(255, 245, 238);
+      position: absolute;
+      top: 200px;
+      margin: auto;
+  }
+  .inputs > input {
+      max-width: 40px;
+      max-height: 20px;
+      height: 20px;
+      width: 40px;
+  }
+  dialog > div {
+      font-size: 16pt;
+      font-weight: bold;
+      font-family: Calibri, sans-serif;
+      color: rgb(210, 132, 247);
+  }
+  .inputs {
+      margin: 20px 20px 20px 20px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+  }
+  form > div {
+      margin: auto;
+  }
+  .button {
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding: 5px 5px 5px 5px;
+      background-color: rgb(210, 132, 247);
+      border-radius: 5px;
+      border: 1px solid rgb(255, 245, 238);
+      font-size: 16pt;
+      font-weight: bold;
+      font-family: Calibri, sans-serif;
+      color: rgb(255, 245, 238);
+      cursor: pointer;
+  }
+  .button:hover {
+      color: rgb(210, 132, 247);
+      background-color: rgb(255, 245, 238);
+      border: 2px solid rgb(210, 132, 247);
+  }
