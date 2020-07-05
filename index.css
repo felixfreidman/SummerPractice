@@ -6,6 +6,7 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: seashell;
 }
 
 body, .main {
@@ -25,24 +26,23 @@ body, .main {
 }
 
 div[class^="board"] {
-    width: 510px;
-    height: 635px;
+    width: 350px;
+    height: 435px;
     border: 2px solid #1d0303;
     padding: 5px;
+    background-color: white;
 }
 
 .label, .image, .square {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
 }
 
 .label {
-    border: 1px solid rgb(59, 41, 41);
     margin: 10px;
 
     background-repeat: no-repeat;
     background-size: contain;
-
 }
 
 .image {
@@ -58,7 +58,7 @@ div[class^="board"] {
 
 .bar {
     border-right: 15px solid #a2f8;
-    width: 265px;
+    width: 200px;
     height: 100%;
     
     padding: 0 30px 40px 30px;
@@ -76,4 +76,21 @@ h1 {
     margin-left: auto;
     margin-right: auto;
     box-shadow: inset 0 -12.5px 0 0 #ffbf00;
+}
+
+img, label, input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.toolbar {
+    border-top: 2px solid salmon;
+    margin-top: 75px;
+}
+
+.var {
+    margin: 20px;
+}
+
+#output {
+    background-color: white;
 }
