@@ -7,6 +7,9 @@ let board2 = document.querySelector(".board2");
 let cameraView = document.querySelector("#cameraView");
 
 
+let theData = [];
+
+
 setSquares(board1, '1.');
 setSquares(board2, '2.');
 // setSquares(board3, '3.');
@@ -75,6 +78,13 @@ document.ondblclick = (event)=> {
     properties();
 
 }
+
+// let label = {
+//     'rotate': deg,
+//     'id': id,
+//     'position': position,
+//     'bin_img': img
+// }
 
 function rotateLabels(event) {
     if (event.path[1].id.includes('1.')) {
@@ -156,6 +166,8 @@ function moveLabel(fromCoord, toCoord, label) {
     mirror(toCoord, svg);
 
     properties();
+
+    theData.push([toCoord, label]);
     
 }
 
@@ -166,13 +178,14 @@ function showLabelAt(coord, label) {
     // async function send() {
 
     //     let figure = {
-    //         "img": label,
-    //         "position": coord 
+    //         "rotate": deg,
+    //         "position": position,
+    //         "id": id,
     //     } 
     //     // position = куда, img - id картинки
         
     //     // случайный url
-    //     let url = 'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits';
+    //     let url = 'url';
     
     //     let response = await fetch(url, {
     //         method: 'POST',
@@ -303,8 +316,8 @@ function render() {
     let amount = Math.trunc( Math.random() * canvas.width * canvas.height);
 
     for (let i = 0; i < amount; i++) {
-        let x = Math.trunc( Math.random() * canvas.width);
-        let y = Math.trunc( Math.random() * canvas.height);
+        let x = Math.trunc( Math.random() * canvas.width); // canvas.width
+        let y = Math.trunc( Math.random() * canvas.height); // canvas.height
         ctx.moveTo(x, y);
         ctx.lineTo(x+1, y+1);
     }
@@ -360,4 +373,9 @@ function CnR() {
 
     ctx.stroke();
 
+}
+
+
+function showTheData() {
+    console.log(theData);
 }
